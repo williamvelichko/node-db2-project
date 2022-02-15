@@ -25,7 +25,7 @@ router.get("/:id", mid.checkCarId, (req, res) => {
     });
 });
 
-router.post("/", mid.checkCarPayload, (req, res) => {
+router.post("/", mid.checkCarPayload, mid.checkVinNumberUnique, (req, res) => {
   const body = req.body;
   cars
     .create(body)
