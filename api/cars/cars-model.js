@@ -18,12 +18,35 @@ const create = async (car) => {
   return getById(id);
 };
 
-//const update = async (id, car) => {
+const updateById = async (id, car) => {
+  let results = await db("cars")
+    .where("id", id)
+    .update(
+      "make",
+      car.make,
+      "model",
+      car.model,
+      "vin",
+      car.vin,
+      "mileage",
+      car.mileage,
+      "title",
+      car.title,
+      "transmission",
+      car.transmission
+    );
 
-//}
+  return getById(id);
+};
+
+const remove = async (id) => {
+  return db("cars").where("id", id).del();
+};
 
 module.exports = {
   getAll,
   getById,
   create,
+  updateById,
+  remove,
 };

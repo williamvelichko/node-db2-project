@@ -9,6 +9,7 @@ const checkCarId = (req, res, next) => {
         .status(404)
         .json({ message: `car with id <${req.params.id}> is not found ` });
     } else {
+      req.car = car;
       next();
     }
   });
@@ -23,16 +24,6 @@ const checkCarPayload = (req, res, next) => {
   if (!mileage) return res.status(400).json({ message: "mileage is missing" });
   if (!vin) return res.status(400).json({ message: "vin is missing" });
   next();
-
-  // if (model == null) {
-  //     res.status(400).json({ message: `model is missing` });
-  //   } else if (mileage == null) {
-  //     res.status(400).json({ message: `mileage is missing` });
-  //   } else if (vin == null) {
-  //     res.status(400).json({ message: `vin is missing` });
-  //   } else {
-  //     next();
-  //}
 };
 
 const checkVinNumberValid = async (req, res, next) => {

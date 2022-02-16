@@ -43,4 +43,33 @@ router.post(
   }
 );
 
+router.put(
+  "/:id",
+  mid.checkCarId,
+  mid.checkVinNumberUnique,
+  mid.checkCarPayload,
+  mid.checkVinNumberValid,
+  (req, res) => {
+    cars
+      .updateById(req.params.id, req.body)
+      .then((updated) => {
+        res.json(updated);
+      })
+      .catch((err) => {
+        res.status(500).json(err);
+      });
+  }
+);
+
+router.delete("/:id", mid.checkCarId, (req, res) => {
+  cars
+    .remove(req.params.id)
+    .then((cars) => {
+      res.json(req.car);
+    })
+    .catch((err) => {
+      res.status(500).json(err);
+    });
+});
+
 module.exports = router;
