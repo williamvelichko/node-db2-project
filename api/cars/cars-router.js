@@ -25,16 +25,22 @@ router.get("/:id", mid.checkCarId, (req, res) => {
     });
 });
 
-router.post("/", mid.checkCarPayload, mid.checkVinNumberUnique, (req, res) => {
-  const body = req.body;
-  cars
-    .create(body)
-    .then((newCar) => {
-      res.json(newCar);
-    })
-    .catch((err) => {
-      res.status(500).json(err);
-    });
-});
+router.post(
+  "/",
+  mid.checkCarPayload,
+  mid.checkVinNumberUnique,
+  //   mid.checkVinNumberValid,
+  (req, res) => {
+    const body = req.body;
+    cars
+      .create(body)
+      .then((newCar) => {
+        res.json(newCar);
+      })
+      .catch((err) => {
+        res.status(500).json(err);
+      });
+  }
+);
 
 module.exports = router;

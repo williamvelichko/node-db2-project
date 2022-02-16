@@ -1,5 +1,6 @@
 const car = require("./cars-model");
 const db = require("./../../data/db-config");
+const vin = require("vin-validator");
 const checkCarId = (req, res, next) => {
   // DO YOUR MAGIC
   car.getById(req.params.id).then((car) => {
@@ -17,31 +18,30 @@ const checkCarPayload = (req, res, next) => {
   // DO YOUR MAGIC
   const { make, model, mileage, vin, title, transmission } = req.body;
 
-  if (make == null) {
-    res.status(400).json({ message: `make is missing` });
-  } else if (model == null) {
-    res.status(400).json({ message: `model is missing` });
-  } else if (mileage == null) {
-    res.status(400).json({ message: `mileage is missing` });
-  } else if (vin == null) {
-    res.status(400).json({ message: `vin is missing` });
-  } else {
-    next();
-  }
+  if (!make) return res.status(400).json({ message: "make is missing" });
+  if (!model) return res.status(400).json({ message: "model is missing" });
+  if (!mileage) return res.status(400).json({ message: "mileage is missing" });
+  if (!vin) return res.status(400).json({ message: "vin is missing" });
+  next();
+
+  // if (model == null) {
+  //     res.status(400).json({ message: `model is missing` });
+  //   } else if (mileage == null) {
+  //     res.status(400).json({ message: `mileage is missing` });
+  //   } else if (vin == null) {
+  //     res.status(400).json({ message: `vin is missing` });
+  //   } else {
+  //     next();
+  //}
 };
 
 const checkVinNumberValid = async (req, res, next) => {
   // DO YOUR MAGIC
   //const { vin } = req.body;
-  try {
-    const result = await db("cars").where("vin", req.body.vin.trim()).first();
-    if (result) {
-      res.status(400).json({ message: `vin ${req.body.vin} is invalid` });
-    } else {
-      next();
-    }
-  } catch (e) {
-    next(e);
+  if (vin.validate(req.params.vin)) {
+    next();
+  } else {
+    res.status(400).json({ message: `vin ${req.body.vin} is invalid` });
   }
 };
 
