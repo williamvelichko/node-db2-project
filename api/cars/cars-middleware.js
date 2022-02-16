@@ -4,7 +4,7 @@ const vin = require("vin-validator");
 const checkCarId = (req, res, next) => {
   // DO YOUR MAGIC
   car.getById(req.params.id).then((car) => {
-    if (car.length === 0) {
+    if (!car) {
       res
         .status(404)
         .json({ message: `car with id <${req.params.id}> is not found ` });
@@ -38,7 +38,7 @@ const checkCarPayload = (req, res, next) => {
 const checkVinNumberValid = async (req, res, next) => {
   // DO YOUR MAGIC
   //const { vin } = req.body;
-  if (vin.validate(req.params.vin)) {
+  if (vin.validate(req.body.vin)) {
     next();
   } else {
     res.status(400).json({ message: `vin ${req.body.vin} is invalid` });

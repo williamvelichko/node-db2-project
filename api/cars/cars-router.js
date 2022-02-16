@@ -29,7 +29,7 @@ router.post(
   "/",
   mid.checkCarPayload,
   mid.checkVinNumberUnique,
-  //   mid.checkVinNumberValid,
+  mid.checkVinNumberValid,
   (req, res) => {
     const body = req.body;
     cars
